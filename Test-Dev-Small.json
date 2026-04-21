@@ -1,62 +1,132 @@
 [
     {
-        "id": 2304,
         "file_name": "Images/Test-Dev/000c71d6e5.jpg",
-        "width": 1024,
-        "height": 576
+        "image_id": 1597,
+        "iscrowd": 0,
+        "area": 8842,
+        "category_id": 0,
+        "bbox": [
+            346,
+            225,
+            92,
+            122
+        ]
     },
     {
-        "id": 3168,
         "file_name": "Images/Test-Dev/00a294e583.jpg",
-        "width": 1024,
-        "height": 687
+        "image_id": 1911,
+        "iscrowd": 0,
+        "area": 44017,
+        "category_id": 0,
+        "bbox": [
+            625,
+            72,
+            225,
+            286
+        ]
     },
     {
-        "id": 15480,
         "file_name": "Images/Test-Dev/00b2b31a35.jpg",
-        "width": 1024,
-        "height": 682
+        "image_id": 6352,
+        "iscrowd": 0,
+        "area": 10035,
+        "category_id": 0,
+        "bbox": [
+            373,
+            149,
+            97,
+            136
+        ]
     },
     {
-        "id": 13628,
         "file_name": "Images/Test-Dev/00b6fe96bc.jpg",
-        "width": 1024,
-        "height": 681
+        "image_id": 13628,
+        "iscrowd": 0,
+        "area": 23563,
+        "category_id": 1,
+        "bbox": [
+            185,
+            153,
+            148,
+            203
+        ]
     },
     {
-        "id": 15259,
         "file_name": "Images/Test-Dev/00b56564e4.jpg",
-        "width": 1024,
-        "height": 768
+        "image_id": 15259,
+        "iscrowd": 0,
+        "area": 13005,
+        "category_id": 0,
+        "bbox": [
+            193,
+            240,
+            113,
+            145
+        ]
     },
     {
-        "id": 2017,
         "file_name": "Images/Test-Dev/00bb2ec7fe.jpg",
-        "width": 1024,
-        "height": 768
+        "image_id": 1496,
+        "iscrowd": 0,
+        "area": 10801,
+        "category_id": 0,
+        "bbox": [
+            326,
+            188,
+            111,
+            140
+        ]
     },
     {
-        "id": 12347,
         "file_name": "Images/Test-Dev/00d011860e.jpg",
-        "width": 1024,
-        "height": 683
+        "image_id": 5231,
+        "iscrowd": 0,
+        "area": 7762,
+        "category_id": 0,
+        "bbox": [
+            172,
+            322,
+            121,
+            125
+        ]
     },
     {
-        "id": 16775,
         "file_name": "Images/Test-Dev/00e1d90230.jpg",
-        "width": 1024,
-        "height": 768
+        "image_id": 6813,
+        "iscrowd": 0,
+        "area": 4494,
+        "category_id": 1,
+        "bbox": [
+            211,
+            320,
+            77,
+            76
+        ]
     },
     {
-        "id": 5085,
         "file_name": "Images/Test-Dev/00e0858c4a.jpg",
-        "width": 1024,
-        "height": 819
+        "image_id": 2605,
+        "iscrowd": 0,
+        "area": 12493,
+        "category_id": 0,
+        "bbox": [
+            344,
+            190,
+            103,
+            147
+        ]
     },
     {
-        "id": 5337,
         "file_name": "Images/Test-Dev/00e4259462.jpg",
-        "width": 1024,
-        "height": 684
+        "image_id": 2695,
+        "iscrowd": 0,
+        "area": 15709,
+        "category_id": 1,
+        "bbox": [
+            115,
+            188,
+            140,
+            142
+        ]
     }
 ]
