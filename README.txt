@@ -371,31 +371,115 @@ Dataset download times out or stalls
      download.
 
 ================================================================================
-9. PROJECT ARCHITECTURE REFERENCE
+9. Project Architecture Reference
 ================================================================================
 
-Notebook Cell Order
+Notebook Structure Overview
 
-  Cell 1  -- Colab Secrets -> env vars -> pip install kaggle -> dataset download
-  Cell 2  -- Imports + per-step timing + GPU/CPU environment probe
-  Cell 3  -- Dataset path helpers (_find_dataset_splits, _has_fake_and_real, etc.)
-  Cell 4  -- OSOptimizedImageDataset
-               os.scandir        fast directory traversal (vs listdir)
-               _read_with_mmap   mmap.mmap + os.open/fstat/close
-               _read_buffered    open(..., buffering=N) fallback
-  Cell 5  -- MultiprocessDataCache
-               Manager().dict()  shared memory dict across forked workers
-               Lock()            mutex for thread-safe cache access
-               Value('i', 0)     shared hit/miss counters
-  Cell 6  -- DeepfakeDetector (frozen ResNet18 backbone + classifier head)
-  Cell 7  -- train_model_with_os_optimization()  [DEFINITION ONLY]
-               Phase 1: Load datasets with OSOptimizedImageDataset
-               Phase 2: Extract 512-dim features ONCE with frozen ResNet18
-               Phase 3: Free extractor + torch.cuda.empty_cache()
-               Phase 4: Train classifier head 20 epochs (ms/epoch)
-               Phase 5: Save best model -> best_deepfake_detector.pth
-  Cell 8  -- model = train_model_with_os_optimization()  [EXECUTES IT]
-  Cell 9  -- evaluate_model()
-               Load best_deepfake_detector.pth
-               Run inference on Test split
-               Accuracy + confusion matrix + classification report
+This project is organized as a step-by-step pipeline in a Jupyter/Colab Notebook. The workflow is divided into 9 main cells, each responsible for a specific stage of the system, ensuring modularity, clarity, and performance optimization at both the OS and model levels.
+
+Cell 1 — Environment Setup & Dataset Download
+Load secrets (e.g., Kaggle API key) and configure environment variables
+Install required dependencies (pip install kaggle)
+Download and extract the dataset
+
+Purpose:
+To ensure the environment is fully prepared and reproducible before execution.
+
+Cell 2 — Imports & System Profiling
+Import all required libraries (PyTorch, NumPy, etc.)
+Implement utilities for measuring execution time per step
+Check system configuration:
+GPU / CPU availability
+CUDA version
+
+Purpose:
+To verify hardware capabilities and monitor performance during execution.
+
+Cell 3 — Dataset Utilities
+
+Includes helper functions such as:
+
+_find_dataset_splits() → locate train/validation/test directories
+_has_fake_and_real() → validate class availability
+Additional validation utilities
+
+Purpose:
+To ensure dataset structure consistency and flexibility across different sources.
+
+Cell 4 — OSOptimizedImageDataset
+
+A custom dataset class designed for efficient file I/O:
+
+Uses os.scandir()
+→ Faster directory traversal compared to os.listdir()
+Uses _read_with_mmap()
+→ Reads files via memory mapping (mmap) to reduce I/O overhead
+Fallback to _read_buffered()
+→ Uses buffered file reading when mmap is unavailable
+
+Key Advantage:
+Minimizes disk I/O bottlenecks and improves data loading speed.
+
+Cell 5 — MultiprocessDataCache
+
+A shared caching mechanism for multiprocessing:
+
+Manager().dict()
+→ Shared dictionary across worker processes
+Lock()
+→ Ensures thread-safe access
+Value('i', 0)
+→ Tracks cache hit/miss statistics
+
+Key Advantage:
+Reduces redundant disk reads and improves data throughput during training.
+
+Cell 6 — DeepfakeDetector Model
+Uses a pretrained ResNet18 as the backbone
+Freezes backbone parameters
+Adds a classifier head for binary classification (real vs fake)
+
+Key Advantage:
+Leverages transfer learning to reduce training time while maintaining strong feature extraction.
+
+Cell 7 — Training Pipeline (Definition Only)
+
+The function train_model_with_os_optimization() includes:
+
+Phase 1: Dataset Loading
+Load data using OSOptimizedImageDataset
+Phase 2: Feature Extraction
+Extract 512-dimensional features using frozen ResNet18
+Performed only once
+Phase 3: Memory Cleanup
+Delete feature extractor
+Call torch.cuda.empty_cache()
+Phase 4: Classifier Training
+Train only the classifier head
+Run for 20 epochs
+Track execution time (ms per epoch)
+Phase 5: Model Saving
+Save the best model as best_deepfake_detector.pth
+
+Key Advantage:
+Separating feature extraction from training significantly improves efficiency.
+
+Cell 8 — Execute Training
+model = train_model_with_os_optimization()
+
+Purpose:
+Runs the full training pipeline.
+
+Cell 9 — Model Evaluation
+Load the best saved model
+Perform inference on the test dataset
+
+Evaluation metrics:
+
+Accuracy
+Confusion Matrix
+Classification Report (Precision, Recall, F1-score)
+
+Purpose:
+To assess model performance comprehensively.
